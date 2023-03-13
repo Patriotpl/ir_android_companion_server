@@ -18,40 +18,14 @@ def main_loop(scheduler: sched.scheduler, prev_ir: irsdk.IRSDK | None = None) ->
         ir = irsdk.IRSDK()      # should this be in the main loop, or main function below?
         ir.startup()
 
-        ir["TrackName"]         # this is needed for checking if ir object is NoneType
+        ir["TrackName"]         # this is what throws an error when the game client's not running
     except AttributeError:
         scheduler.enter(IDLE_REFRESH_RATE, 1, main_loop, (scheduler,))
         print("iRacing is not running.")
         return
-    
-    else:
-        # the below part was meant to check if the iR process has been closed
-        # but the WMI().Win32_Process() takes ~3seconds to execute
-        # which makes the refreshrate f itself
 
-        # # if the game client closes api keeps on return data from the last moment in the session
-        # # therefore to limit number of requests when game is not running the script checks for client's process
-        # if "iRacingSim64DX11.exe" not in [p.Name for p in wmi.WMI().Win32_Process()]:
-        #     scheduler.enter(IDLE_REFRESH_RATE, 1, main_loop, (scheduler,))
-        #     print("iRacing is not running.")
-        #     return
-
-        # prev_ir not existing means that the script has just been turned on
-        # the following code reruns the loop to get new data
-        if prev_ir is None:
-            scheduler.enter(0, 1, main_loop, (scheduler, ir))
-            return
-        
-        # this checks if previous data snapshot is identical to current one
-        # which would mean that the game client is not running
-        # and thus data refresh rate can be returned to idle value
-        if prev_ir == ir:
-            scheduler.enter(IDLE_REFRESH_RATE, 1, main_loop, (scheduler,))
-            print("iRacing is not running.")
-            return
-
-        scheduler.enter(IN_GAME_REFRESH_RATE, 1, main_loop, (scheduler, ir))
-        print("iRacing is running.")
+    scheduler.enter(IN_GAME_REFRESH_RATE, 1, main_loop, (scheduler, ir))
+    print("iRacing is running.")
 
 if __name__ == "__main__":
     scheduler = sched.scheduler(time.time, time.sleep)
