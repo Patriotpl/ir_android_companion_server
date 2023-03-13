@@ -9,8 +9,44 @@ from env.settings import CLIENT_ADDRESS
 IDLE_REFRESH_RATE = 10
 IN_GAME_REFRESH_RATE = 1/30     #TODO: make the delays changable from the phone app
 
+"""
+This function parses the data from irsdk and returns it as a string.
+For now it also calculates all the additional data like when given competitor will be in striking distance, fuel required to finish the stint etc.
+This will change when I learn some more about kotlin to lessen the computer load.
+"""
 def select_data(ir: irsdk.IRSDK) -> str:
-    #TODO: choose data to send
+    # data to send
+
+    # standings:
+    # -----------------------
+    # list of competitors
+    # their race position
+    # their on track position
+    # their class
+    # their cars
+    # their last laptime
+    # their avg laptime (use only last 5 laps, or all race + last 5 laps separately?) - this must be stored inside the script
+    # their tire type and age (the latter for later)
+    # their pitstop counts (and when they took it?)
+    # their predicted place after a pitstop?? probably crap idea
+    # wether they're on track, in pits or practicing lawn mowing (when any other than on track maybe you should recalculate laptimes to catch them??)
+    # if player's lapping quicker when given competitor will be in striking distance
+    # what laptimes would player need to catch up to given competitor 1 lap before race end (maybe make the amount of laps settable from the app?)
+    # if they're chasing the player - in how many laps they're in striking distance and what laptimes the player needs to avoid being caught untill the end of session
+    # number of mandatory pitstops player and competitors have yet to have cleared (and what needs to be done it these pitstops??)
+    
+    # session
+    # -----------------------
+    # track name
+    # time of day
+    # lapped or timed?
+    # if lapped current lap / laps total
+    # if timed time untill the end of session and estimated total laps (use quali times, session best or session avg?)
+    # fp, qual or race?
+    # fixed of customizable setups?
+    # if fixed data about opponents tire types can be omitted
+    # mandatory pitstop or not?
+    # if not data about opponenets pitstops can be omitted 
     return str(ir["TrackName"])
 
 """
