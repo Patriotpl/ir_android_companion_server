@@ -19,6 +19,12 @@ def select_data(ir: irsdk.IRSDK) -> str:
 
     # standings:
     # -----------------------
+    # notes:
+    # this would be the main view of the mobile client once the game instance is detected
+    # i think having 70-80% of the view dedicated to standings as a list and 20% to data about particular opponent should be fine here
+    # tapping any opponent entry on the list should bring up data about that guys, incl. when he'll be in striking distance, what lap times are needed to catch him / run etc.
+    # thus some data might be omitted until the opponents id is passed by the mobile client
+    # -----------------------
     # list of competitors
     # their race position
     # their on track position
@@ -37,8 +43,15 @@ def select_data(ir: irsdk.IRSDK) -> str:
     
     # session
     # -----------------------
+    # notes:
+    # some of the settings appearing here might change how much data is being sent for other views
+    # most of the data here can be sent once at the beginning of the session and then stored (or tracked in case of time of day) on clientside
+    # tho idk about weather data, if ir has random weather this might need to be tracked here and sent on change
+    # refresh data button on the client's side will be helpful anyway
+    # -----------------------
     # track name
     # time of day
+    # weather data (wind, temp, rain - if it exists in ir)
     # lapped or timed?
     # if lapped current lap / laps total
     # if timed time untill the end of session and estimated total laps (use quali times, session best or session avg?)
@@ -47,6 +60,32 @@ def select_data(ir: irsdk.IRSDK) -> str:
     # if fixed data about opponents tire types can be omitted
     # mandatory pitstop or not?
     # if not data about opponenets pitstops can be omitted 
+
+    # pitstop
+    # -----------------------
+    # notes:
+    # most of this data can be omitted and only sent on changes to reduce payloads
+    # -----------------------
+    # tyre compound (is it even a thing in ir?)
+    # tyre pressures
+    # tyre (and brake??) temps
+    # car state
+    # car damage
+    # estimated pit time??
+    # fuel usage (overall and last lap or last x laps avg?)
+    # fuel to add (with est how much fuel needed to the end of race / stint?)
+
+    # laptimes
+    # -----------------------
+    # notes:
+    # most of this data can be omitted and only sent on changes to reduce payloads
+    # -----------------------
+    # players laptimes
+    # which players laps were invalid
+    # players best and optimal laptime (both valid and invalid) in current session
+    # overall session best laptime
+    # players current laptime (can be tracked clientside i think?; this might actually be useless)
+    # players all time best and optimal laptime?
     return str(ir["TrackName"])
 
 """
