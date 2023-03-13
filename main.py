@@ -2,19 +2,19 @@ import irsdk
 import sched
 import time
 import socket
+from env.settings import CLIENT_ADDRESS
 
 # scheduler set to check for a runnig ir instance every 10 seconds
 # when instance is detected this changes to 30 times a second
 IDLE_REFRESH_RATE = 10
 IN_GAME_REFRESH_RATE = 1/30     #TODO: make the delays changable from the phone app
-CLIENT_ADDRESS = ("100.96.83.62", 7215)
 
 def select_data(ir: irsdk.IRSDK) -> str:
     #TODO: choose data to send
     return str(ir["TrackName"])
 
 """
-This is the main function containing the basic loop of the application.
+This is the function containing the basic loop of the application.
 It simply tries to grab the data from api and preps the next scheduller event.
 If trying to get the data fails the delay is set to 10 seconds.
 Else delay is set to 1/30 of a second.
